@@ -1,5 +1,10 @@
 <?php
-	//require 'PHP-Parser/lib/bootstrap.php';
+	/*
+        Implementa o iterador dos elementos da AST criada pelo Parser
+        Adiciona uma estrutura para armazenar informações importantes
+        sobre as classes
+    */
+
 	use PhpParser\Node;
 
 	class MyNodeVisitor extends PhpParser\NodeVisitorAbstract {
@@ -23,12 +28,6 @@
             ...
 
         */
-
-        /*
-        public function __construct(){
-            parent::__construct(
-            );
-        }*/
 
         private function addClass($nome){
 
@@ -56,9 +55,6 @@
 
         		array_push($this->classes, $node->name);
 
-                // Inclusao de classes
-                //$this->addClass($node->name);
-
                 $class = array();
                 $class["name"] = $node->name;
                 $class["extends"] = $node->extends;
@@ -72,33 +68,12 @@
                     if($stmt instanceof Node\Stmt\Property){
                         foreach ($stmt->props as $property){
                             array_push($class["attributes"], array(get_class($property->default), $property->name));
-
-
-                            /*
-                            if(array_key_exists($node->name, $this->atributos)){
-                                array_push($this->atributos["$node->name"], get_class($property->default).','.$property->name);
-                            }
-                            else{
-                                $this->atributos["$node->name"] = array(get_class($property->default).','.$property->name);
-                            }
-                            */
-                            
                         }
                     }
 
                     // Extrai os metodos da classe
                     if($stmt instanceof Node\Stmt\ClassMethod){
                         array_push($class["methods"], $stmt->name);
-
-                        
-                       /* if(array_key_exists($node->name, $this->metodos)){
-                            array_push($this->metodos["$node->name"], $stmt->name);
-                        }
-                        else{
-                            $this->metodos["$node->name"] = array($stmt->name);
-                        }
-                        */
-                        
                     }
 
                 }
